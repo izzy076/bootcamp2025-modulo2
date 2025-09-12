@@ -2,27 +2,33 @@
 // configurar nuestro servidor y gestionar la lógica de negocio
 
 // 1. Importar las dependencias necesarias
-import express from "express";
+import express, { response } from "express";
 import dotenv from "dotenv";
 import { conexionMongo } from "./src/config/db.js";
 import { productRouter } from "./src/routes/products.routes.js";
 import { userRouter } from "./src/routes/users.routes.js";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // 2. Configurar las depedencias que necesitemos
 const app = express();
 dotenv.config();
 const port =process.env.PORT;
 conexionMongo(); // esto es lo que hace la conexión con db
+const _filename = fileURLToPath(import.meta.url); // _filename = backend/app.js
+const _dirname = path.dirname(_filename); // _dirname = backend
 
 // 3. Funcionalidades que necesite agregar
 app.get("/",(req,rest)=>{
-  rest.send("Serer works!")
+  response.send("Server works!")
 });
 
-app.use(express.json());
+app.use(cors()); // habilita CORS
+app.use(express.json()); // es para usar formato json
 app.use("/products", productRouter);
 app.use("/users", userRouter);
-
+app.use("/uploads", express.static(path.join(_dirname, "src/uploads")));
 
 // 4. Levantar el servidor //3000, 9000
 app.listen(port, ()=>{
