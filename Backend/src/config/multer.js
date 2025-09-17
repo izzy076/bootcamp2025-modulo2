@@ -1,6 +1,6 @@
 // 1. Importaciones necesarias
 import multer from "multer";
-import path, { dirname } from "path"; // modulo de node
+import path from "path"; // modulo de node
 import fs from "fs"; // modulo de node
 import { fileURLToPath } from "url"; // modulo de node
 
